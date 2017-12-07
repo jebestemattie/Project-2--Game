@@ -67,8 +67,6 @@ def game_loop():
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
 
-        GetNumbers()
-        print(print GetNumbers())
 
         x += x_change
         y += y_change
@@ -78,7 +76,6 @@ def game_loop():
 
         pygame.display.update()
         clock.tick(30)
-
 
 
 game_loop()
