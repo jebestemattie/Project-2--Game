@@ -32,10 +32,6 @@ def grid():
             containerImg = resourcesFolder+("container"+str(numbers[i][j])+".png")
             gameDisplay.blit(pygame.image.load(containerImg), (drawWidth,drawHeight))
 
-    #Blit right container number
-
-
-
 def game_loop():
 
     x = (0)
@@ -97,7 +93,6 @@ def draw(x, y):
 
     pygame.display.update()
     clock.tick(30)
-
 
 game_loop()
 pygame.quit()
