@@ -14,12 +14,42 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
 
+numbers = Container.GetNumbers()
+
 craneImg = pygame.image.load("crane.png")
+
+containerImg1 = pygame.image.load("container1.png")
+containerImg2 = pygame.image.load("container2.png")
+containerImg3 = pygame.image.load("container3.png")
+containerImg4 = pygame.image.load("container4.png")
+containerImg5 = pygame.image.load("container5.png")
 
 def crane(x,y):
     gameDisplay.blit(craneImg,(x,y))
 
+def grid():
+    rooster11 = (numbers[0][0])
+    #rooster12 = numbers[0][1]
+    #rooster13 = numbers[0][2]
+    #rooster14 = numbers[0][3]
+    #rooster15 = numbers[0][4]
+    #rooster16 = numbers[0][5]
 
+    #rooster2.1
+
+    if rooster11 == 1:
+        gameDisplay.blit(containerImg1,(0,540))
+    if rooster11 == 2:
+        gameDisplay.blit(containerImg2,(0,540))
+    if rooster11 == 3:
+        gameDisplay.blit(containerImg3,(0,540))
+    if rooster11 == 4:
+        gameDisplay.blit(containerImg4,(0,540))
+    if rooster11 == 5:
+        gameDisplay.blit(containerImg5,(0,540))
+
+
+    
 
 def game_loop():
 
@@ -66,6 +96,8 @@ def game_loop():
                     x_change = 0
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
+            
+        
 
 
         x += x_change
@@ -77,8 +109,8 @@ def game_loop():
         pygame.display.update()
         clock.tick(30)
 
-
+Container.GetNumbers()
+grid()
 game_loop()
 pygame.quit()
-quit()
 quit()
