@@ -14,39 +14,27 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
 
+resourcesFolder = "resources/"
+
 numbers = Container.GetNumbers()
 
-craneImg = pygame.image.load("crane.png")
-
-containerImg1 = pygame.image.load("container1.png")
-containerImg2 = pygame.image.load("container2.png")
-containerImg3 = pygame.image.load("container3.png")
-containerImg4 = pygame.image.load("container4.png")
-containerImg5 = pygame.image.load("container5.png")
+craneImg = pygame.image.load(resourcesFolder+"crane.png")
 
 def crane(x,y):
     gameDisplay.blit(craneImg,(x,y))
 
 def grid():
-    rooster11 = (numbers[0][0])
-    #rooster12 = numbers[0][1]
-    #rooster13 = numbers[0][2]
-    #rooster14 = numbers[0][3]
-    #rooster15 = numbers[0][4]
-    #rooster16 = numbers[0][5]
+    for i in range(5):
+        drawHeight = 540-(60*i)
+        for j in range(6):
+            drawWidth = 0+(60*j)
 
-    #rooster2.1
+            containerImg = resourcesFolder+("container"+str(numbers[i][j])+".png")
+            gameDisplay.blit(pygame.image.load(containerImg), (drawWidth,drawHeight))
 
-    if rooster11 == 1:
-        gameDisplay.blit(containerImg1,(0,540))
-    if rooster11 == 2:
-        gameDisplay.blit(containerImg2,(0,540))
-    if rooster11 == 3:
-        gameDisplay.blit(containerImg3,(0,540))
-    if rooster11 == 4:
-        gameDisplay.blit(containerImg4,(0,540))
-    if rooster11 == 5:
-        gameDisplay.blit(containerImg5,(0,540))
+    #Blit right container number
+
+
 
 def game_loop():
 
@@ -59,7 +47,6 @@ def game_loop():
     done = False
 
     while not done:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -97,16 +84,20 @@ def game_loop():
         x += x_change
         y += y_change
 
-        gameDisplay.fill(white)
-        crane(x,y)
+        draw(x, y)
 
-		#Hier draw je je grid.
-		#Doe je het eerder, dan wordt het onzichtbaar aangezien alles overschreven wordt met wit. (line 100)
-		#Doe je het buiten deze game loop dan wordt het niet getekend.
+alreadyDrawn = False
+
+def draw(x, y):
+    if not alreadyDrawn:
+        gameDisplay.fill(white)
         grid()
 
-        pygame.display.update()
-        clock.tick(30)
+    crane(x,y)
+
+    pygame.display.update()
+    clock.tick(30)
+
 
 game_loop()
 pygame.quit()
