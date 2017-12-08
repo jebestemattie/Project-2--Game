@@ -48,9 +48,6 @@ def grid():
     if rooster11 == 5:
         gameDisplay.blit(containerImg5,(0,540))
 
-
-    
-
 def game_loop():
 
     x = (0)
@@ -96,9 +93,6 @@ def game_loop():
                     x_change = 0
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
-            
-        
-
 
         x += x_change
         y += y_change
@@ -106,11 +100,14 @@ def game_loop():
         gameDisplay.fill(white)
         crane(x,y)
 
+		#Hier draw je je grid.
+		#Doe je het eerder, dan wordt het onzichtbaar aangezien alles overschreven wordt met wit. (line 100)
+		#Doe je het buiten deze game loop dan wordt het niet getekend.
+        grid()
+
         pygame.display.update()
         clock.tick(30)
 
-Container.GetNumbers()
-grid()
 game_loop()
 pygame.quit()
 quit()
