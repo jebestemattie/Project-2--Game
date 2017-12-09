@@ -1,5 +1,5 @@
 import pygame
-import Container
+from ContainerGenerator import *
 
 pygame.init()
 
@@ -10,33 +10,25 @@ black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 
+cranePosX = 0
+cranePosY = 540
+
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
 
-resourcesFolder = "resources/"
+containers = ContainerGenerator().Get()
 
-numbers = Container.GetNumbers()
+grabbedContainer = None
+
+resourcesFolder = "resources/"
 
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
 
-def crane(x,y):
-    gameDisplay.blit(craneImg,(x,y))
-
-def grid():
-    for i in range(5):
-        drawHeight = 540-(60*i)
-        for j in range(6):
-            drawWidth = 0+(60*j)
-
-            containerImg = resourcesFolder+("container"+str(numbers[i][j])+".png")
-            gameDisplay.blit(pygame.image.load(containerImg), (drawWidth,drawHeight))
+def crane():
+    gameDisplay.blit(craneImg,(cranePosX,cranePosY))
 
 def game_loop():
-
-    x = (0)
-    y = (540)
-
     x_change = 0
     y_change = 0
 
@@ -61,15 +53,21 @@ def game_loop():
                     y_change = -60
                 elif event.key == pygame.K_DOWN:
                     y_change = 60
+                elif event.key == pygame.K_SPACE:
+                    craneHandler()
 
-            if x > 740:
-                x = 740
-            if x < 0:
-                x = 0
-            if y > 540:
-                y = 540
-            if y < 0:
-                y = 0
+            #als grabbedContainer bestaat, move hem mee met de crane
+            global cranePosX
+            if cranePosX > 740:
+                cranePosX = 740
+            if cranePosX < 0:
+                cranePosX = 0
+
+            global cranePosY
+            if cranePosY > 540:
+                cranePosY = 540
+            if cranePosY < 0:
+                cranePosY = 0
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -77,19 +75,39 @@ def game_loop():
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
 
-        x += x_change
-        y += y_change
+        cranePosX += x_change
+        cranePosY += y_change
 
-        draw(x, y)
+        draw()
 
-alreadyDrawn = False
+def craneHandler():
+    global grabbedContainer
+    if grabbedContainer is None:
+        grabContainer()
+    else:
+        dropContainer()
 
-def draw(x, y):
-    if not alreadyDrawn:
-        gameDisplay.fill(white)
-        grid()
+def grabContainer():
+    for block in containers:
+        for container in block:
+            if container.posX == cranePosX and container.posY == cranePosY:
+                global grabbedContainer
+                grabbedContainer = container
 
-    crane(x,y)
+def dropContainer():
+    pass
+    #code om grabbedContainer 'los te laten'
+    
+
+def draw():
+    gameDisplay.fill(white)
+
+    for block in containers:
+        for container in block:
+            img = pygame.image.load(resourcesFolder + container.image)
+            gameDisplay.blit(img, (container.posX, container.posY))
+
+    crane()
 
     pygame.display.update()
     clock.tick(15)
