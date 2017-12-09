@@ -92,7 +92,7 @@ def draw(x, y):
     crane(x,y)
 
     pygame.display.update()
-    clock.tick(30)
+    clock.tick(15)
 
 game_loop()
 pygame.quit()
