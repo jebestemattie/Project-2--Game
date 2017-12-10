@@ -46,38 +46,31 @@ def game_loop():
             global cranePosY
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    cranePosX += -60
-                    if grabbedContainer is not None:
-                        grabbedContainer.posX += -60
+                    if cranePosX > 0:
+                        cranePosX += -60
+                        if grabbedContainer is not None:
+                            grabbedContainer.posX += -60
 
                 elif event.key == pygame.K_RIGHT:
-                    cranePosX += 60
-                    if grabbedContainer is not None:
-                        grabbedContainer.posX += 60
+                    if cranePosX < 720:
+                        cranePosX += 60
+                        if grabbedContainer is not None:
+                            grabbedContainer.posX += 60
                         
                 elif event.key == pygame.K_UP:
-                    cranePosY += -60
-                    if grabbedContainer is not None:
-                        grabbedContainer.posY += -60
+                    if cranePosY > 0:
+                        cranePosY += -60
+                        if grabbedContainer is not None:
+                            grabbedContainer.posY += -60
 
                 elif event.key == pygame.K_DOWN:
-                    cranePosY += 60
-                    if grabbedContainer is not None:
-                        grabbedContainer.posY += 60
-                        
+                    if cranePosY < 540:
+                        cranePosY += 60
+                        if grabbedContainer is not None:
+                            grabbedContainer.posY += 60
+
                 elif event.key == pygame.K_SPACE:
                     craneHandler()
-
-            #als grabbedContainer bestaat, move hem mee met de crane
-            if cranePosX > 720:
-                cranePosX = 720
-            if cranePosX < 0:
-                cranePosX = 0
-
-            if cranePosY > 540:
-                cranePosY = 540
-            if cranePosY < 0:
-                cranePosY = 0
 
         draw()
 
