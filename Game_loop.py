@@ -29,8 +29,6 @@ def crane():
     gameDisplay.blit(craneImg,(cranePosX,cranePosY))
 
 def game_loop():
-    x_change = 0
-    y_change = 0
 
     done = False
 
@@ -44,39 +42,30 @@ def game_loop():
 #                   done = True
 
             ###MOVEMENT
+            global cranePosX
+            global cranePosY
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    x_change = -60
+                    cranePosX += -60
                 elif event.key == pygame.K_RIGHT:
-                    x_change = 60
+                    cranePosX += 60
                 elif event.key == pygame.K_UP:
-                    y_change = -60
+                    cranePosY += -60
                 elif event.key == pygame.K_DOWN:
-                    y_change = 60
+                    cranePosY += 60
                 elif event.key == pygame.K_SPACE:
                     craneHandler()
 
             #als grabbedContainer bestaat, move hem mee met de crane
-            global cranePosX
-            if cranePosX > 740:
-                cranePosX = 740
+            if cranePosX > 720:
+                cranePosX = 720
             if cranePosX < 0:
                 cranePosX = 0
 
-            global cranePosY
             if cranePosY > 540:
                 cranePosY = 540
             if cranePosY < 0:
                 cranePosY = 0
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    x_change = 0
-                elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    y_change = 0
-
-        cranePosX += x_change
-        cranePosY += y_change
 
         draw()
 
@@ -110,7 +99,7 @@ def draw():
     crane()
 
     pygame.display.update()
-    clock.tick(15)
+    clock.tick(60)
 
 game_loop()
 pygame.quit()
