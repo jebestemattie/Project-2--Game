@@ -6,9 +6,7 @@ pygame.init()
 display_width = 800
 display_height = 600
 
-black = (0,0,0)
 white = (255,255,255)
-red = (255,0,0)
 
 cranePosX = 0
 cranePosY = 540
@@ -37,11 +35,7 @@ def game_loop():
             if event.type == pygame.QUIT:
                 done = True
 
-#            RIPRIPRIPRIP
-#            if (event.type == pygame.KEYDOWN and event.mod == pygame.KMOD_ALT and event.key == pygame.K_F4):
-#                   done = True
-
-            ###MOVEMENT
+            '''MOVEMENT'''
             global cranePosX
             global cranePosY
             if event.type == pygame.KEYDOWN:
@@ -56,7 +50,7 @@ def game_loop():
                         cranePosX += 60
                         if grabbedContainer is not None:
                             grabbedContainer.posX += 60
-                        
+                       
                 elif event.key == pygame.K_UP:
                     if cranePosY > 0:
                         cranePosY += -60
@@ -89,8 +83,13 @@ def grabContainer():
                 grabbedContainer = container
 
 def dropContainer():
-    pass
-    #code om grabbedContainer 'los te laten'
+    for block in containers:
+        for container in block:
+            pass
+        global grabbedContainer
+        grabbedContainer = None
+
+    
     
 
 def draw():
