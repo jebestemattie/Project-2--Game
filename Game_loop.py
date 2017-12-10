@@ -47,12 +47,24 @@ def game_loop():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     cranePosX += -60
+                    if grabbedContainer is not None:
+                        grabbedContainer.posX += -60
+
                 elif event.key == pygame.K_RIGHT:
                     cranePosX += 60
+                    if grabbedContainer is not None:
+                        grabbedContainer.posX += 60
+                        
                 elif event.key == pygame.K_UP:
                     cranePosY += -60
+                    if grabbedContainer is not None:
+                        grabbedContainer.posY += -60
+
                 elif event.key == pygame.K_DOWN:
                     cranePosY += 60
+                    if grabbedContainer is not None:
+                        grabbedContainer.posY += 60
+                        
                 elif event.key == pygame.K_SPACE:
                     craneHandler()
 
