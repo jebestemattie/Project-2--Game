@@ -42,6 +42,10 @@ def game_loop():
                         cranePosX += -60
                         if grabbedContainer is not None:
                             grabbedContainer.posX += -60
+                    Color = gameDisplay.get_at(((cranePosX - 60)(cranePosY)))
+                    
+                    #if ((cranePosX - 60) == container.posX):
+                    #    cranePosX += 60
 
                 elif event.key == pygame.K_RIGHT:
                     if cranePosX < 720:
@@ -85,11 +89,11 @@ def dropContainer():
     for block in containers:
         for container in block:
             global grabbedContainer
-            if (container.posX == cranePosX 
-            and container.posY == (cranePosY + 60) 
-            and container.number == (grabbedContainer.number + 1)
-            or cranePosY == 540
-            and cranePosX <= 300):
+            if (
+                (container.posX == cranePosX 
+                and container.posY == (cranePosY + 60) 
+                and container.number == (grabbedContainer.number + 1))
+                or cranePosY == 540):
                 grabbedContainer = None
 
 def draw():
