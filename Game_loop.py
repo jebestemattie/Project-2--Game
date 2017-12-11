@@ -20,6 +20,7 @@ grabbedContainer = None
 resourcesFolder = "resources/"
 
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
+refreshImg = pygame.image.load(resourcesFolder+"refresh.png")
 
 def crane():
     gameDisplay.blit(craneImg,(cranePosX,cranePosY))
@@ -29,23 +30,20 @@ def game_loop():
     done = False
 
     while not done:
+        '''events'''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
 
-            '''MOVEMENT'''
             global cranePosX
             global cranePosY
             if event.type == pygame.KEYDOWN:
+                '''movement'''
                 if event.key == pygame.K_LEFT:
                     if cranePosX > 0:
                         cranePosX += -60
                         if grabbedContainer is not None:
                             grabbedContainer.posX += -60
-                    Color = gameDisplay.get_at(((cranePosX - 60)(cranePosY)))
-                    
-                    #if ((cranePosX - 60) == container.posX):
-                    #    cranePosX += 60
 
                 elif event.key == pygame.K_RIGHT:
                     if cranePosX < 720:
@@ -65,8 +63,12 @@ def game_loop():
                         if grabbedContainer is not None:
                             grabbedContainer.posY += 60
 
-                elif event.key == pygame.K_SPACE:
+                '''container handling'''
+                if event.key == pygame.K_SPACE:
                     craneHandler()
+            
+            mouse = pygame.mouse.get_pos()
+            pass
 
         draw()
 
@@ -80,10 +82,15 @@ def craneHandler():
 def grabContainer():
     for block in containers:
         for container in block:
+            dog = False
             if (container.posX == cranePosX 
             and container.posY == cranePosY):
-                global grabbedContainer
-                grabbedContainer = container
+                if (container.posX == cranePosX 
+                and container.posY == (cranePosY - 60)):
+                    dog = True
+                if dog == False:
+                    global grabbedContainer
+                    grabbedContainer = container
 
 def dropContainer():
     for block in containers:
@@ -99,6 +106,8 @@ def dropContainer():
 def draw():
     white = (255,255,255)
     gameDisplay.fill(white)
+
+    gameDisplay.blit(refreshImg,(710,10))
 
     for block in containers:
         for container in block:
