@@ -6,8 +6,6 @@ pygame.init()
 display_width = 800
 display_height = 600
 
-white = (255,255,255)
-
 cranePosX = 0
 cranePosY = 540
 
@@ -78,21 +76,24 @@ def craneHandler():
 def grabContainer():
     for block in containers:
         for container in block:
-            if container.posX == cranePosX and container.posY == cranePosY:
+            if (container.posX == cranePosX 
+            and container.posY == cranePosY):
                 global grabbedContainer
                 grabbedContainer = container
 
 def dropContainer():
     for block in containers:
         for container in block:
-            pass
-        global grabbedContainer
-        grabbedContainer = None
-
-    
-    
+            global grabbedContainer
+            if (container.posX == cranePosX 
+            and container.posY == (cranePosY + 60) 
+            and container.number == (grabbedContainer.number + 1)
+            or cranePosY == 540
+            and cranePosX <= 300):
+                grabbedContainer = None
 
 def draw():
+    white = (255,255,255)
     gameDisplay.fill(white)
 
     for block in containers:
