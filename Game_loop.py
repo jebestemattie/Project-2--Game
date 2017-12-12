@@ -20,10 +20,14 @@ grabbedContainer = None
 resourcesFolder = "resources/"
 
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
+craneGrabbedImg = pygame.image.load(resourcesFolder+"craneGrabbed.png")
 refreshImg = pygame.image.load(resourcesFolder+"refresh.png")
 
 def crane():
-    gameDisplay.blit(craneImg,(cranePosX,cranePosY))
+    if grabbedContainer is None:
+        gameDisplay.blit(craneImg,(cranePosX,cranePosY))
+    else:
+        gameDisplay.blit(craneGrabbedImg,(cranePosX,cranePosY))
 
 def game_loop():
 
@@ -39,29 +43,33 @@ def game_loop():
             global cranePosY
             if event.type == pygame.KEYDOWN:
                 '''movement'''
-                if event.key == pygame.K_LEFT:
-                    if cranePosX > 0:
+                if event.key == pygame.K_LEFT and cranePosX > 0:
+                    if grabbedContainer is not None and checkContainerPresentTo(pygame.K_LEFT) is False:
+                        grabbedContainer.posX += -60
                         cranePosX += -60
-                        if grabbedContainer is not None:
-                            grabbedContainer.posX += -60
+                    elif grabbedContainer is None:
+                        cranePosX += -60
 
-                elif event.key == pygame.K_RIGHT:
-                    if cranePosX < 720:
+                elif event.key == pygame.K_RIGHT and cranePosX < 720:
+                    if grabbedContainer is not None and checkContainerPresentTo(pygame.K_RIGHT) is False:
+                        grabbedContainer.posX += 60
                         cranePosX += 60
-                        if grabbedContainer is not None:
-                            grabbedContainer.posX += 60
+                    elif grabbedContainer is None:
+                        cranePosX += 60
                        
-                elif event.key == pygame.K_UP:
-                    if cranePosY > 0:
+                elif event.key == pygame.K_UP and cranePosY > 0:
+                    if grabbedContainer is not None and checkContainerPresentTo(pygame.K_UP) is False:
+                        grabbedContainer.posY += -60
                         cranePosY += -60
-                        if grabbedContainer is not None:
-                            grabbedContainer.posY += -60
+                    elif grabbedContainer is None:
+                        cranePosY += -60
 
-                elif event.key == pygame.K_DOWN:
-                    if cranePosY < 540:
+                elif event.key == pygame.K_DOWN and cranePosY < 540:
+                    if grabbedContainer is not None and checkContainerPresentTo(pygame.K_DOWN) is False:
+                        grabbedContainer.posY += 60
                         cranePosY += 60
-                        if grabbedContainer is not None:
-                            grabbedContainer.posY += 60
+                    elif grabbedContainer is None:
+                        cranePosY += 60
 
                 '''container handling'''
                 if event.key == pygame.K_SPACE:
@@ -72,6 +80,23 @@ def game_loop():
 
         draw()
 
+def checkContainerPresentTo(direction):
+    if direction == pygame.K_LEFT:
+        return checkContainerPresentAt(cranePosX - 60, cranePosY)
+    elif direction == pygame.K_RIGHT:
+        return checkContainerPresentAt(cranePosX + 60, cranePosY)
+    elif direction == pygame.K_UP:
+        return checkContainerPresentAt(cranePosX, cranePosY - 60)
+    elif direction == pygame.K_DOWN:
+        return checkContainerPresentAt(cranePosX, cranePosY + 60)
+
+def checkContainerPresentAt(x, y):
+    for block in containers:
+        for container in block:
+            if (container.posX == x and container.posY == y):
+                return True
+    return False
+
 def craneHandler():
     global grabbedContainer
     if grabbedContainer is None:
@@ -80,15 +105,16 @@ def craneHandler():
         dropContainer()
 
 def grabContainer():
+    #TODO: if UP direction has a block, don't grab (use checkContainerTo(UP))
     for block in containers:
         for container in block:
-            dog = False
+            bork = False
             if (container.posX == cranePosX 
             and container.posY == cranePosY):
                 if (container.posX == cranePosX 
                 and container.posY == (cranePosY - 60)):
-                    dog = True
-                if dog == False:
+                    bork = True
+                if bork == False:
                     global grabbedContainer
                     grabbedContainer = container
 
