@@ -105,16 +105,11 @@ def craneHandler():
         dropContainer()
 
 def grabContainer():
-    #TODO: if UP direction has a block, don't grab (use checkContainerTo(UP))
     for block in containers:
         for container in block:
-            bork = False
             if (container.posX == cranePosX 
             and container.posY == cranePosY):
-                if (container.posX == cranePosX 
-                and container.posY == (cranePosY - 60)):
-                    bork = True
-                if bork == False:
+                if checkContainerPresentTo(pygame.K_UP) is False:
                     global grabbedContainer
                     grabbedContainer = container
 
@@ -128,6 +123,35 @@ def dropContainer():
                 and container.number == (grabbedContainer.number + 1))
                 or cranePosY == 540):
                 grabbedContainer = None
+                stackCheck()
+
+def stackCheck():
+    for block in containers:
+        for container in block:
+            if ((cranePosX == container.posX) and (cranePosY == container.posY) and (container.number == 1)):
+                del1 = container
+                for block in containers:
+                    for container in block:
+                        if ((cranePosX == container.posX) and ((cranePosY + 60) == container.posY) and (container.number == 2)):
+                            del2 = container
+                            for block in containers:
+                                for container in block:
+                                    if ((cranePosX == container.posX) and ((cranePosY + 120) == container.posY) and (container.number == 3)):
+                                        del3 = container
+                                        for block in containers:
+                                            for container in block:
+                                                if ((cranePosX == container.posX) and ((cranePosY + 180) == container.posY) and (container.number == 4)):
+                                                    del4 = container
+                                                    for block in containers:
+                                                        for container in block:
+                                                            if ((cranePosX == container.posX) and ((cranePosY + 240) == container.posY) and (container.number == 5)):
+                                                                del5 = container
+                                                                del1.posX += -1000
+                                                                del2.posX += -1000
+                                                                del3.posX += -1000
+                                                                del4.posX += -1000
+                                                                del5.posX += -1000          
+
 
 def draw():
     white = (255,255,255)
