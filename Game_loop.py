@@ -14,11 +14,9 @@ pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
 
 containers = None
-
 grabbedContainer = None
 
 resourcesFolder = "resources/"
-
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
 craneGrabbedImg = pygame.image.load(resourcesFolder+"craneGrabbed.png")
 refreshImg = pygame.image.load(resourcesFolder+"refresh.png")
@@ -32,6 +30,9 @@ def crane():
 def game_loop():
 
     done = False
+    
+    delCount = 0
+    gameEnd = False
 
     while not done:
         '''events'''
@@ -154,7 +155,12 @@ def stackCheck():
                                                                 del2.posX += -1000
                                                                 del3.posX += -1000
                                                                 del4.posX += -1000
-                                                                del5.posX += -1000          
+                                                                del5.posX += -1000
+                                                                #global delCount
+                                                                delCount += 1
+                                                                if delCount == 6:
+                                                                    #global gameEnd
+                                                                    gameEnd = True          
 
 def getContainers():
     global containers
@@ -166,6 +172,7 @@ getContainers()
 
 def draw():
     white = (255,255,255)
+    bl = (0,0,0)
     gameDisplay.fill(white)
 
     gameDisplay.blit(refreshImg,(710,10))
@@ -176,6 +183,9 @@ def draw():
             gameDisplay.blit(img, (container.posX, container.posY))
 
     crane()
+
+    if gameEnd == True:
+        gameDisplay.fill(bl)
 
     pygame.display.update()
     clock.tick(60)
