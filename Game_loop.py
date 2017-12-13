@@ -13,7 +13,7 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
 
-containers = ContainerGenerator().Get()
+containers = None
 
 grabbedContainer = None
 
@@ -74,9 +74,13 @@ def game_loop():
                 '''container handling'''
                 if event.key == pygame.K_SPACE:
                     craneHandler()
-            
-            mouse = pygame.mouse.get_pos()
-            pass
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                click = pygame.mouse.get_pressed()
+                if click[0] == 1:
+                    if 790 > mouse[0] > 710 and 90 > mouse[1] > 10:
+                        getContainers()
 
         draw()
 
@@ -152,6 +156,13 @@ def stackCheck():
                                                                 del4.posX += -1000
                                                                 del5.posX += -1000          
 
+def getContainers():
+    global containers
+    global grabbedContainer
+    containers = ContainerGenerator().Get()
+    grabbedContainer = None
+
+getContainers()
 
 def draw():
     white = (255,255,255)
