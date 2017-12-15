@@ -32,8 +32,6 @@ c_row4Img = pygame.image.load(resourcesFolder+"c_row4.png")
 c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
 
-
-
 delCount = 0
 gameEnd = False
 
@@ -46,9 +44,6 @@ def crane():
 def game_loop():
 
     done = False
-
-    if gameEnd == True:
-        done = True
 
     while not done:
         '''events'''
@@ -98,6 +93,10 @@ def game_loop():
                 if click[0] == 1:
                     if 790 > mouse[0] > 710 and 90 > mouse[1] > 10:
                         getContainers()
+
+        if gameEnd == True:
+            done = True
+            endGameLoop()
 
         draw()
 
@@ -228,9 +227,6 @@ def draw():
             gameDisplay.blit(img, (container.posX, container.posY))
 
     crane()
-
-    if gameEnd == True:
-        endGameLoop()
 
     pygame.display.update()
     clock.tick(30)
