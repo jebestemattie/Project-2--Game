@@ -172,7 +172,7 @@ def getContainers():
 getContainers()
 
 def draw():
-    bl = (0,0,0)
+    black = (0,0,0)
     gameDisplay.blit(backgroundImg, (0, 0))
 
     gameDisplay.blit(refreshImg,(710,10))
@@ -185,7 +185,7 @@ def draw():
     crane()
 
     if gameEnd == True:
-        gameDisplay.fill(bl)
+        gameDisplay.fill(black)
 
     pygame.display.update()
     clock.tick(60)
