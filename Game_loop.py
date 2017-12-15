@@ -83,6 +83,9 @@ def game_loop():
                     elif grabbedContainer is None:
                         cranePosY += 60
 
+                elif event.key == pygame.K_RCTRL:
+                    endGameLoop()
+
                 '''container handling'''
                 if event.key == pygame.K_SPACE:
                     craneHandler()
@@ -196,6 +199,7 @@ def endGameLoop():
         global shipPosX
         shipPosX += 10
         if shipPosX == 250:
+            #TODO
             pass
 
         draw()
