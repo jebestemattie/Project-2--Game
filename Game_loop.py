@@ -1,6 +1,7 @@
 import pygame
 from ContainerGenerator import *
 
+pygame.mixer.init()
 pygame.init()
 
 display_width = 800
@@ -31,6 +32,8 @@ c_row3Img = pygame.image.load(resourcesFolder+"c_row3.png")
 c_row4Img = pygame.image.load(resourcesFolder+"c_row4.png")
 c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
+
+boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
 
 delCount = 0
 gameEnd = False
@@ -147,6 +150,8 @@ def dropContainer():
                 or cranePosY == 540):
                 grabbedContainer = None
                 stackCheck()
+                
+                boom.play()
 
 def stackCheck():
     for block in containers:
@@ -199,7 +204,6 @@ def endGameLoop():
         global shipPosX
         shipPosX += 10
         if shipPosX == 250:
-            #TODO
             pass
 
         draw()
