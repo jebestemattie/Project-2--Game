@@ -9,6 +9,8 @@ display_height = 600
 cranePosX = 0
 cranePosY = 540
 
+shipPosX = 0
+
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
@@ -21,6 +23,16 @@ craneImg = pygame.image.load(resourcesFolder+"crane.png")
 craneGrabbedImg = pygame.image.load(resourcesFolder+"craneGrabbed.png")
 refreshImg = pygame.image.load(resourcesFolder+"refresh.png")
 backgroundImg = pygame.image.load(resourcesFolder+"background.png")
+shipImg = pygame.image.load(resourcesFolder+"ship.png")
+pierImg = pygame.image.load(resourcesFolder+"pier.png")
+c_row1Img = pygame.image.load(resourcesFolder+"c_row1.png")
+c_row2Img = pygame.image.load(resourcesFolder+"c_row2.png")
+c_row3Img = pygame.image.load(resourcesFolder+"c_row3.png")
+c_row4Img = pygame.image.load(resourcesFolder+"c_row4.png")
+c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
+c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
+
+
 
 delCount = 0
 gameEnd = False
@@ -34,6 +46,9 @@ def crane():
 def game_loop():
 
     done = False
+
+    if gameEnd == True:
+        done = True
 
     while not done:
         '''events'''
@@ -159,7 +174,7 @@ def stackCheck():
                                                                 del5.posX += -1000
                                                                 global delCount
                                                                 delCount += 1
-                                                                if delCount == 6:
+                                                                if delCount == 1:
                                                                     global gameEnd
                                                                     gameEnd = True          
 
@@ -171,9 +186,39 @@ def getContainers():
 
 getContainers()
 
+def endGameLoop():
+    done = False
+
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+        
+        global shipPosX
+        shipPosX += 10
+        if shipPosX == 250:
+            pass
+
+        draw()
+
+
 def draw():
     black = (0,0,0)
     gameDisplay.blit(backgroundImg, (0, 0))
+    gameDisplay.blit(shipImg, (shipPosX, 0))
+    gameDisplay.blit(pierImg, (0, 0))
+    if delCount > 0:
+        gameDisplay.blit(c_row1Img, (shipPosX,0))
+        if delCount > 1:
+            gameDisplay.blit(c_row2Img, (shipPosX,0))
+            if delCount > 2:
+                gameDisplay.blit(c_row3Img, (shipPosX,0))
+                if delCount > 3:
+                    gameDisplay.blit(c_row4Img, (shipPosX,0))
+                    if delCount > 4:
+                        gameDisplay.blit(c_row5Img, (shipPosX,0))
+                        if delCount > 5:
+                            gameDisplay.blit(c_row6Img, (shipPosX,0))
 
     gameDisplay.blit(refreshImg,(710,10))
 
@@ -185,10 +230,10 @@ def draw():
     crane()
 
     if gameEnd == True:
-        gameDisplay.fill(black)
+        endGameLoop()
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(30)
 
 game_loop()
 pygame.quit()
