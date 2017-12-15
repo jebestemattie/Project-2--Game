@@ -20,6 +20,10 @@ resourcesFolder = "resources/"
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
 craneGrabbedImg = pygame.image.load(resourcesFolder+"craneGrabbed.png")
 refreshImg = pygame.image.load(resourcesFolder+"refresh.png")
+backgroundImg = pygame.image.load(resourcesFolder+"background.png")
+
+delCount = 0
+gameEnd = False
 
 def crane():
     if grabbedContainer is None:
@@ -30,9 +34,6 @@ def crane():
 def game_loop():
 
     done = False
-    
-    delCount = 0
-    gameEnd = False
 
     while not done:
         '''events'''
@@ -156,10 +157,10 @@ def stackCheck():
                                                                 del3.posX += -1000
                                                                 del4.posX += -1000
                                                                 del5.posX += -1000
-                                                                #global delCount
+                                                                global delCount
                                                                 delCount += 1
                                                                 if delCount == 6:
-                                                                    #global gameEnd
+                                                                    global gameEnd
                                                                     gameEnd = True          
 
 def getContainers():
@@ -171,9 +172,8 @@ def getContainers():
 getContainers()
 
 def draw():
-    white = (255,255,255)
     bl = (0,0,0)
-    gameDisplay.fill(white)
+    gameDisplay.blit(backgroundImg, (0, 0))
 
     gameDisplay.blit(refreshImg,(710,10))
 
