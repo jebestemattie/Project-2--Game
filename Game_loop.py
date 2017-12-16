@@ -34,6 +34,7 @@ c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
 
 boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
+takeoff = pygame.mixer.Sound(resourcesFolder+"takeoff.wav")
 
 delCount = 0
 gameEnd = False
@@ -182,8 +183,20 @@ def stackCheck():
                                                                 global delCount
                                                                 delCount += 1
                                                                 if delCount == 1:
+                                                                    #quick_maffs
                                                                     global gameEnd
-                                                                    gameEnd = True          
+                                                                    gameEnd = True
+                                                                elif delCount == 2:
+                                                                    pass#skidikipapa
+                                                                elif delCount == 3:
+                                                                    pass#moving_cornflakes
+                                                                elif delCount == 4:
+                                                                    pass#2plus2is4
+                                                                elif delCount == 5:
+                                                                    pass#papapkakaka
+                                                                elif delCount == 6:
+                                                                    pass
+                                                                     
 
 def getContainers():
     global containers
@@ -202,7 +215,10 @@ def endGameLoop():
                 done = True
         
         global shipPosX
-        shipPosX += 10
+        takeoff.play()
+        shipPosX += 1       
+        if shipPosX >80:
+            shipPosX += 5
         if shipPosX == 250:
             pass
 
