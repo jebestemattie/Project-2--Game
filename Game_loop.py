@@ -34,7 +34,13 @@ c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
 
 boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
+quick_maffs = pygame.mixer.Sound(resourcesFolder+"quick_maffs2.wav")
+skidikipapa = pygame.mixer.Sound(resourcesFolder+"skidikipapa2.wav")
+moving_cornflakes = pygame.mixer.Sound(resourcesFolder+"moving_cornflakes2.wav")
+s1234 = pygame.mixer.Sound(resourcesFolder+"12342.wav")
+papapkakaka = pygame.mixer.Sound(resourcesFolder+"papapkakaka2.wav")
 takeoff = pygame.mixer.Sound(resourcesFolder+"takeoff.wav")
+dun_now = pygame.mixer.Sound(resourcesFolder+"dun_now2.wav")
 
 delCount = 0
 gameEnd = False
@@ -152,7 +158,7 @@ def dropContainer():
                 grabbedContainer = None
                 stackCheck()
                 
-                boom.play()
+                #boom.play()
 
 def stackCheck():
     for block in containers:
@@ -183,19 +189,18 @@ def stackCheck():
                                                                 global delCount
                                                                 delCount += 1
                                                                 if delCount == 1:
-                                                                    #quick_maffs
+                                                                    quick_maffs.play()
+                                                                if delCount == 2:
+                                                                    skidikipapa.play()
+                                                                if delCount == 3:
+                                                                    moving_cornflakes.play()
+                                                                elif delCount == 4:
+                                                                    s1234.play()
+                                                                elif delCount == 5:
+                                                                    papapkakaka.play()
+                                                                elif delCount == 6:
                                                                     global gameEnd
                                                                     gameEnd = True
-                                                                elif delCount == 2:
-                                                                    pass#skidikipapa
-                                                                elif delCount == 3:
-                                                                    pass#moving_cornflakes
-                                                                elif delCount == 4:
-                                                                    pass#2plus2is4
-                                                                elif delCount == 5:
-                                                                    pass#papapkakaka
-                                                                elif delCount == 6:
-                                                                    pass
                                                                      
 
 def getContainers():
@@ -208,16 +213,16 @@ getContainers()
 
 def endGameLoop():
     done = False
-
+    takeoff.play()
     while not done:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
         
         global shipPosX
-        takeoff.play()
         shipPosX += 1       
-        if shipPosX >80:
+        if shipPosX >70:
             shipPosX += 5
         if shipPosX == 250:
             pass
