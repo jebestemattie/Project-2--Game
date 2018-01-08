@@ -35,10 +35,10 @@ c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
 
 boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
 quick_maffs = pygame.mixer.Sound(resourcesFolder+"quick_maffs2.wav")
-skidikipapa = pygame.mixer.Sound(resourcesFolder+"skidikipapa2.wav")
-moving_cornflakes = pygame.mixer.Sound(resourcesFolder+"moving_cornflakes2.wav")
-s1234 = pygame.mixer.Sound(resourcesFolder+"12342.wav")
-papapkakaka = pygame.mixer.Sound(resourcesFolder+"papapkakaka2.wav")
+#skidikipapa = pygame.mixer.Sound(resourcesFolder+"skidikipapa2.wav")
+#moving_cornflakes = pygame.mixer.Sound(resourcesFolder+"moving_cornflakes2.wav")
+#s1234 = pygame.mixer.Sound(resourcesFolder+"12342.wav")
+#papapkakaka = pygame.mixer.Sound(resourcesFolder+"papapkakaka2.wav")
 takeoff = pygame.mixer.Sound(resourcesFolder+"takeoff.wav")
 dun_now = pygame.mixer.Sound(resourcesFolder+"dun_now2.wav")
 
@@ -94,6 +94,7 @@ def game_loop():
                         cranePosY += 60
 
                 elif event.key == pygame.K_RCTRL:
+                    done = True
                     endGameLoop()
 
                 '''container handling'''
@@ -106,6 +107,8 @@ def game_loop():
                 if click[0] == 1:
                     if 790 > mouse[0] > 710 and 90 > mouse[1] > 10:
                         getContainers()
+                        global delCount
+                        delCount = 0
 
         if gameEnd == True:
             done = True
@@ -188,20 +191,25 @@ def stackCheck():
                                                                 del5.posX += -1000
                                                                 global delCount
                                                                 delCount += 1
-                                                                if delCount == 1:
-                                                                    quick_maffs.play()
-                                                                if delCount == 2:
-                                                                    skidikipapa.play()
-                                                                if delCount == 3:
-                                                                    moving_cornflakes.play()
-                                                                elif delCount == 4:
-                                                                    s1234.play()
-                                                                elif delCount == 5:
-                                                                    papapkakaka.play()
-                                                                elif delCount == 6:
+                                                                quick_maffs.play()
+                                                                if delCount == 6:
                                                                     global gameEnd
                                                                     gameEnd = True
-                                                                     
+                                                                
+#def playSound():
+#    if delCount == 1:
+#        quick_maffs.play()
+#    if delCount == 2:
+#        skidikipapa.play()
+#    if delCount == 3:
+#        moving_cornflakes.play()
+#    if delCount == 4:
+#        s1234.play()
+#    if delCount == 5:
+#        papapkakaka.play()
+#    if delCount == 6:
+#        global gameEnd
+#        gameEnd = True                                                                     
 
 def getContainers():
     global containers
@@ -222,10 +230,11 @@ def endGameLoop():
         
         global shipPosX
         shipPosX += 1       
-        if shipPosX >70:
+        if shipPosX >50:
             shipPosX += 5
-        if shipPosX == 250:
-            pass
+        if shipPosX > 650:
+            dun_now.play()
+            done = True
 
         draw()
 
