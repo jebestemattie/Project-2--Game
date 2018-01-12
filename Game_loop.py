@@ -12,12 +12,12 @@ cranePosY = 540
 
 shipPosX = 0
 
+containers = None
+grabbedContainer = None
+
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
-
-containers = None
-grabbedContainer = None
 
 resourcesFolder = "resources/"
 craneImg = pygame.image.load(resourcesFolder+"crane.png")
@@ -33,12 +33,8 @@ c_row4Img = pygame.image.load(resourcesFolder+"c_row4.png")
 c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
 
-boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
+# boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
 quick_maffs = pygame.mixer.Sound(resourcesFolder+"quick_maffs2.wav")
-#skidikipapa = pygame.mixer.Sound(resourcesFolder+"skidikipapa2.wav")
-#moving_cornflakes = pygame.mixer.Sound(resourcesFolder+"moving_cornflakes2.wav")
-#s1234 = pygame.mixer.Sound(resourcesFolder+"12342.wav")
-#papapkakaka = pygame.mixer.Sound(resourcesFolder+"papapkakaka2.wav")
 takeoff = pygame.mixer.Sound(resourcesFolder+"takeoff.wav")
 dun_now = pygame.mixer.Sound(resourcesFolder+"dun_now2.wav")
 
@@ -53,6 +49,20 @@ def crane():
 
 def game_loop():
 
+    global delCount
+    global cranePosX
+    global cranePosY
+    global shipPosX
+    global grabbedContainer
+    delCount = 0
+    cranePosX = 0
+    cranePosY = 540
+    shipPosX = 0
+    grabbedContainer = None
+
+    getContainers()
+
+
     done = False
 
     while not done:
@@ -61,8 +71,6 @@ def game_loop():
             if event.type == pygame.QUIT:
                 done = True
 
-            global cranePosX
-            global cranePosY
             if event.type == pygame.KEYDOWN:
                 '''movement'''
                 if event.key == pygame.K_LEFT and cranePosX > 0:
@@ -107,7 +115,14 @@ def game_loop():
                 if click[0] == 1:
                     if 790 > mouse[0] > 710 and 90 > mouse[1] > 10:
                         getContainers()
-                        global delCount
+
+                        cranePosX = 0
+                        cranePosY = 540
+
+                        shipPosX = 0
+
+                        containers = None
+                        grabbedContainer = None
                         delCount = 0
 
         if gameEnd == True:
@@ -195,21 +210,7 @@ def stackCheck():
                                                                 if delCount == 6:
                                                                     global gameEnd
                                                                     gameEnd = True
-                                                                
-#def playSound():
-#    if delCount == 1:
-#        quick_maffs.play()
-#    if delCount == 2:
-#        skidikipapa.play()
-#    if delCount == 3:
-#        moving_cornflakes.play()
-#    if delCount == 4:
-#        s1234.play()
-#    if delCount == 5:
-#        papapkakaka.play()
-#    if delCount == 6:
-#        global gameEnd
-#        gameEnd = True                                                                     
+                                                                                                                                    
 
 def getContainers():
     global containers
