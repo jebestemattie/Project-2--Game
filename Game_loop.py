@@ -15,6 +15,8 @@ shipPosX = 0
 containers = None
 grabbedContainer = None
 
+sec = None
+
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Container Stacker")
 clock = pygame.time.Clock()
@@ -32,6 +34,7 @@ c_row3Img = pygame.image.load(resourcesFolder+"c_row3.png")
 c_row4Img = pygame.image.load(resourcesFolder+"c_row4.png")
 c_row5Img = pygame.image.load(resourcesFolder+"c_row5.png")
 c_row6Img = pygame.image.load(resourcesFolder+"c_row6.png")
+gameovermenuImg = pygame.image.load(resourcesFolder+"gameovermenu.png")
 
 # boom = pygame.mixer.Sound(resourcesFolder+"boom2.wav")
 quick_maffs = pygame.mixer.Sound(resourcesFolder+"quick_maffs2.wav")
@@ -39,7 +42,7 @@ takeoff = pygame.mixer.Sound(resourcesFolder+"takeoff.wav")
 dun_now = pygame.mixer.Sound(resourcesFolder+"dun_now2.wav")
 
 delCount = 0
-gameEnd = False
+gameEnd = 0
 
 def crane():
     if grabbedContainer is None:
@@ -49,6 +52,7 @@ def crane():
 
 def game_loop():
 
+    global gameEnd
     global delCount
     global cranePosX
     global cranePosY
@@ -62,6 +66,7 @@ def game_loop():
 
     getContainers()
 
+    start_ticks=pygame.time.get_ticks()
 
     done = False
 
@@ -70,6 +75,7 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+                gameEnd = 3
 
             if event.type == pygame.KEYDOWN:
                 '''movement'''
@@ -80,7 +86,7 @@ def game_loop():
                     elif grabbedContainer is None:
                         cranePosX += -60
 
-                elif event.key == pygame.K_RIGHT and cranePosX < 720:
+                elif event.key == pygame.K_RIGHT and cranePosX < 300:
                     if grabbedContainer is not None and checkContainerPresentTo(pygame.K_RIGHT) is False:
                         grabbedContainer.posX += 60
                         cranePosX += 60
@@ -102,8 +108,7 @@ def game_loop():
                         cranePosY += 60
 
                 elif event.key == pygame.K_RCTRL:
-                    done = True
-                    endGameLoop()
+                    gameEnd = 1
 
                 '''container handling'''
                 if event.key == pygame.K_SPACE:
@@ -125,11 +130,16 @@ def game_loop():
                         grabbedContainer = None
                         delCount = 0
 
-        if gameEnd == True:
-            done = True
-            endGameLoop()
+        
+        global sec
+        sec = (pygame.time.get_ticks()-start_ticks)/1000
 
         draw()
+
+        if gameEnd == 1:
+            done = True
+            
+
 
 def checkContainerPresentTo(direction):
     if direction == pygame.K_LEFT:
@@ -209,7 +219,7 @@ def stackCheck():
                                                                 quick_maffs.play()
                                                                 if delCount == 6:
                                                                     global gameEnd
-                                                                    gameEnd = True
+                                                                    gameEnd = 1
                                                                                                                                     
 
 def getContainers():
@@ -228,20 +238,48 @@ def endGameLoop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+                global gameEnd
+                gameEnd = 3
         
         global shipPosX
-        shipPosX += 1       
-        if shipPosX >50:
+        if shipPosX < 65:
+            shipPosX += 1       
+        if shipPosX >= 65:
             shipPosX += 5
-        if shipPosX > 650:
+        if shipPosX == 500: 
             dun_now.play()
+        if shipPosX > 700:
+            gameEnd = 2
             done = True
 
         draw()
 
+def game_over():
+    global gameEnd
+    if gameEnd == 2:
+        done = False
+        while not done:
+            
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True
+                    gameEnd = 3
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse = pygame.mouse.get_pos()
+                    click = pygame.mouse.get_pressed()
+                    if click[0] == 1:
+                        if 356 > mouse[0] > 186 and 377 > mouse[1] > 325:
+                            done = True
+                        if 613 > mouse[0] > 443 and 377 > mouse[1] > 325:
+                            gameEnd = 3
+                            done = True
+                            
+    draw()
+
 
 def draw():
-    black = (0,0,0)
     gameDisplay.blit(backgroundImg, (0, 0))
     gameDisplay.blit(shipImg, (shipPosX, 0))
     gameDisplay.blit(pierImg, (0, 0))
@@ -260,16 +298,37 @@ def draw():
 
     gameDisplay.blit(refreshImg,(710,10))
 
+    sys_font = pygame.font.SysFont \
+                ("None", 60)
+    rendered = sys_font.render \
+        (str(sec), 0, (0, 0, 0))
+    gameDisplay.blit(rendered, (600, 550))
+
     for block in containers:
         for container in block:
             img = pygame.image.load(resourcesFolder + container.image)
             gameDisplay.blit(img, (container.posX, container.posY))
 
-    crane()
+    crane()                            
+
+    global gameEnd      
+    if gameEnd == 2:
+        gameDisplay.blit(gameovermenuImg, (0, 0))
+        scorerendered = sys_font.render \
+                    ((("Your score: ")+(str(sec))), 0, (0 ,0, 0))
+        gameDisplay.blit(scorerendered, (220, 270))
 
     pygame.display.update()
     clock.tick(30)
 
-game_loop()
+while gameEnd is not 3:
+    gameEnd = 0
+    game_loop()
+    if gameEnd is not 3:
+        endGameLoop()
+    if gameEnd is not 3:
+        game_over()
+
+
 pygame.quit()
 quit()
