@@ -53,6 +53,8 @@ def crane():
 def game_loop():
 
     global gameEnd
+    gameEnd = 0
+
     global delCount
     global cranePosX
     global cranePosY
@@ -322,7 +324,6 @@ def draw():
     clock.tick(30)
 
 while gameEnd is not 3:
-    gameEnd = 0
     game_loop()
     if gameEnd is not 3:
         endGameLoop()
